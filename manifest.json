@@ -1,0 +1,16 @@
+{
+    "name": "Fundamental Web Helper",
+    "version": "1.0",
+    "manifest_version": 2,
+    "content_scripts":[{
+        "matches": ["file:///*", "https://www.dicoding.com/*"],
+        "js": ["foreground.js"]
+    }],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+
+    },
+    "browser_action": {},
+    "permissions": ["tabs"]
+} 

@@ -1,0 +1,14 @@
+.btn {
+    color: #fff;
+    margin: 1px;
+}
+
+.btn-reject {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-accept {
+    background-color: #11c5c6;
+    border-color: #11c5c6;
+}
