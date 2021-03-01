@@ -49,7 +49,33 @@ if (url.includes('file://')) {
             console.log(`%c${strElement}: false`, 'color: #721c24; background-color: #f8d7da;');
         }
     }
+}
 
+if (url.includes('https://www.dicoding.com/dashboard')) {
+    const table = document.querySelector('.student-satisfaction-stats')
+    // create an observer instance
+    const observer = new MutationObserver(function (mutations) {
+        if (table.text !== 'Loading data') {
+            markLowRating()
+        }
+    });
+    // configuration of the observer:
+    const config = {
+        attributes: true,
+        childList: true,
+        characterData: true
+    };
+    // pass in the target node, as well as the observer options
+    observer.observe(table, config);
+
+    function markLowRating() {
+        let data = [...table.rows].map(t => [...t.children].map(u => u.innerText))
+        data.forEach((element, index) => {
+            if (parseFloat(element[2]) < 4.75) {
+                table.children[index].style.background = 'red'
+            }
+        })
+    }
 }
 
 chrome.runtime.onMessage.addListener(function (templateMessage) {
