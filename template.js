@@ -28,18 +28,23 @@ const templateMessage = [
         message: `<li>Untuk menyelesaikan tugas submission dan mendapatkan sertifikat, kamu harus menyelesaikan project submission sesuai dengan kriteria yang ada dengan tidak menggunakan framework seperti Bootstrap, template, website builder seperti Blogger atau project dari tutorial di luar dicoding. Silakan websitenya dibuat sendiri dari awal ya.</li>`
     }, {
         type: 'accept',
-        key: `acc1`,
+        key: `sama modul, no js`,
         message: `<li>Website yang kamu buat sudah sangat baik, namun kamu masih terpaku pada penyusunan layout modul latihan, sebaiknya kamu berimprovisasi dengan cara membuat tampilan yang lebih menarik dari modul, responsive, dan menggunakan javascript untuk memanipulasi DOM. Tingkatkan websitenya untuk latihan yaa :). </li>`
     }, {type: 'accept',
-        key: `acc2`,
+        key: `beda modul, no js`,
         message: `<li>Aplikasi yang kamu buat sudah sangat baik. Namun akan lebih baik lagi jika kamu membuat tampilan yang lebih menarik, dapat menyesuaikan tampilan dengan baik di semua perangkat dan menggunakan javascript untuk memanipulasi DOM. Tingkatkan aplikasinya untuk latihan yaa :). </li>`
-    }, {
+    },{
         type: 'accept',
-        key: `acc3`,
+        key: `beda modul, ada js`,
+        message: `<li>Aplikasi yang kamu buat sudah sangat baik. Namun akan lebih baik lagi jika kamu membuat tampilan yang lebih menarik dan dapat menyesuaikan tampilan dengan baik di semua perangkat. Tingkatkan aplikasinya untuk latihan yaa :). </li>`
+    },
+    {
+        type: 'accept',
+        key: `tampilan doang`,
         message: `<li>Aplikasi yang kamu buat sudah sangat baik. Namun akan lebih baik lagi jika kamu membuat tampilan yang lebih menarik. Tingkatkan aplikasinya untuk latihan yaa :).</li>`
     }, {
         type: 'accept',
-        key: `acc4`,
+        key: `sama modul, ada js`,
         message: `<li>Website yang kamu buat sudah sangat baik, namun kamu masih terpaku pada penyusunan layout modul latihan, sebaiknya kamu berimprovisasi dengan cara membuat tampilan yang lebih menarik dari modul. Tingkatkan websitenya untuk latihan yaa :).</li>`
     }
 
