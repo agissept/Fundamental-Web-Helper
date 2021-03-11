@@ -90,7 +90,7 @@ if (url.includes('https://www.dicoding.com/dashboard')) {
     function markLowRating() {
         let data = [...table.rows].map(t => [...t.children].map(u => u.innerText))
         data.forEach((element, index) => {
-            if (parseFloat(element[2]) < 4.75) {
+            if (parseFloat(element[3]) < 4.75) {
                 table.children[index].style.background = 'red'
             }
         })
