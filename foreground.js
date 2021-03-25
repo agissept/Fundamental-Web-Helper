@@ -97,6 +97,16 @@ if (url.includes('https://www.dicoding.com/dashboard')) {
     }
 }
 
+
+window.addEventListener("load", () => {
+    document.querySelector("body").style.fontWeight = 500
+    const buttons = document.querySelectorAll(".btn")
+    buttons.forEach((button) => {
+        button.style.fontWeight = 600
+    })
+})
+
+
 chrome.runtime.onMessage.addListener(function (templateMessage) {
     console.log("zzzz");
     const p = document.querySelectorAll('.form-control-static')[1]
@@ -129,6 +139,27 @@ chrome.runtime.onMessage.addListener(function (templateMessage) {
             froala[0].innerHTML = template
             froala[0].scrollIntoView()
 
+            break
+        case 'copy':
+
+            const dummy = document.createElement("textarea");
+            // to avoid breaking orgain page when copying more words
+            // cant copy when adding below this code
+            // dummy.style.display = 'none'
+            document.body.appendChild(dummy);
+            //Be careful if you use texarea. setAttribute('value', value), which works with "input" does not work with "textarea". – Eduard
+            dummy.value = templateMessage.message;
+            dummy.select();
+
+            function listener(e) {
+                e.clipboardData.setData("text/html", templateMessage.message);
+                e.clipboardData.setData("text/plain", templateMessage.message);
+                e.preventDefault();
+            }
+            document.addEventListener("copy", listener);
+            document.execCommand("copy");
+            document.removeEventListener("copy", listener);
+            document.body.removeChild(dummy);
             break
         default:
             template = templateMessage.message
