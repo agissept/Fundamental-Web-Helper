@@ -106,6 +106,14 @@ window.addEventListener("load", () => {
     })
 })
 
+const allCheck = () => {
+    const checklistContainer = document.querySelectorAll('.card.card-default.mb-4')[4]
+    const checklist = checklistContainer.querySelectorAll('label.btn-secondary')
+    checklist.forEach(element => {
+        element.click()
+    })
+}
+
 
 chrome.runtime.onMessage.addListener(function (templateMessage) {
     console.log("zzzz");
@@ -116,6 +124,9 @@ chrome.runtime.onMessage.addListener(function (templateMessage) {
 
     let template
     switch (templateMessage.type) {
+        case "all-check":
+            allCheck()
+            break
         case 'reject':
             // const checklistContainer = document.querySelectorAll('.card.card-default.mb-4')[4]
             // const checklist = checklistContainer.querySelectorAll('label.btn-secondary')
@@ -129,12 +140,7 @@ chrome.runtime.onMessage.addListener(function (templateMessage) {
 
             break
         case 'accept':
-            const checklistContainer = document.querySelectorAll('.card.card-default.mb-4')[4]
-            const checklist = checklistContainer.querySelectorAll('label.btn-secondary')
-            checklist.forEach(element => {
-                element.click()
-            })
-
+            allCheck()
             template = acceptionTemplate.replace('$name', name).replace('$message', templateMessage.message)
             froala[0].innerHTML = template
             froala[0].scrollIntoView()
