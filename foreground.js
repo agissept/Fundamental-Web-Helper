@@ -25,6 +25,49 @@ const acceptionTemplate = `
 <p style="text-align:right;"><span style="color:rgb(0,0,0);">Dicoding Reviewer</span></p>`
 
 
+const acceptBackendTemplate = `
+<p>Hallo <strong>$name</strong>, terima kasih telah sabar menunggu. Kami membutuhkan waktu untuk bisa memberikan <em>feedback</em> sekomprehensif mungkin kepada setiap peserta kelas. Dalam kesempatan ini ada 4 (empat) hal yang ingin kami sampaikan.</p>
+<p><strong>Pertama</strong>, kami ingin mengucapkan selamat! Karena kamu telah menyelesaikan tugas submission dan dinyatakan <strong>LULUS</strong> dari kelas Belajar Membuat Aplikasi Back-End untuk Pemula. Jangan lihat bintang yang kamu raih, tapi lihat kemajuan yang sudah kamu capai. Ingat semua <em>expert</em> dahulu pemula.</p>
+<p><strong>K</strong><strong>edua</strong>, kamu boleh bangga karena telah menyelesaikan submission sesuai dengan kriteria yang telah kami tentukan. Mumpung masih hangat semangatnya langsung lanjut kelas selanjutnya yaitu <a href="https://www.dicoding.com/academies/266">Architecting on AWS (Membangun Arsitektur AWS di Cloud)</a> atau <a href="https://www.dicoding.com/academies/271">Belajar Fundamental Aplikasi Back-End</a>.</p>
+<p><strong>K</strong><strong>etiga</strong>, beberapa lulusan tidak tahu mereka memiliki akses kelas selamanya. Sebagai informasi kelas Dicoding selalu <em>update</em> sehingga memiliki perbedaan minimal 30% dari sejak kelas dirilis. Silakan mampir kembali untuk melihat materi saat kamu membutuhkan <em>update</em> </p><p><strong>K</strong><strong>eempat</strong>, karena sudah praktik langsung maka kamu sudah menguasai ilmu kelas dasar ini antara 75-90%. Salah satu cara agar meningkatkan penguasaan ilmu agar bisa lebih maksimal (&gt;90%) adalah dengan memperbanyak latihan atau mengajarkan ilmu kepada orang lain.</p>
+<p style="">Salah satu misi Dicoding adalah menyebarkan ilmu yang bermanfaat. Kami berusaha membangun kurikulum standar global dengan harapan agar developer Indonesia bisa menjadi jawara di negeri sendiri. Namun misi ini tidak akan tercapai tanpa kolaborasi dari kita semua.</p><p>Silakan berkunjung ke <a href="https://www.dicoding.com/academies/261/discussions">academy discussion</a> untuk mengasah penguasaan ilmu kamu dan membuat ilmu yang kamu dapatkan bisa semakin berkah dan bermanfaat dengan membantu kawan-kawan kita yang saat ini masih berjuang.</p><p>Terima kasih telah membantu misi kami. Kesuksesan developer Indonesia adalah energi bagi kami. Jika memiliki pertanyaan atau saran terkait kelas, silakan email ke <a href="mailto:%20academy@dicoding.com" rel="noreferrer noopener" target="_blank">academy@dicoding.com</a>.</p><hr><p style="text-align:right;"><em>Salam</em></p>
+<p style="text-align:right;"><span style="color:rgb(226,80,65);">Dicoding Reviewer</span></p>
+`
+
+const checklistAllCriteria = () => {
+    const button = document.querySelectorAll('.btn-group-toggle .btn-secondary')
+    button.forEach(e => {
+        e.click()
+    })
+
+}
+
+
+const showAcceptButton = () => {
+    const cardHeader = document.querySelectorAll('.card-header')[4]
+    const buttonAccept1 = '<button id="accept-button" value="4">Bintang 4</button>'
+    const buttonAccept2 = '<button id="accept-button" value="5">Bintang 5</button>'
+
+    cardHeader.insertAdjacentHTML('beforeend', buttonAccept1 + buttonAccept2)
+
+    document.querySelectorAll('#accept-button').forEach(button => {
+        button.addEventListener('click', () => {
+            checklistAllCriteria()
+
+            const p = document.querySelectorAll('.form-control-static')[1]
+            const name = p.querySelector('a').innerText
+            const froala = document.querySelectorAll('.fr-element')[0]
+            const template = acceptBackendTemplate.replace('$name', name)
+            froala.innerHTML = template
+
+            document.querySelectorAll('.empty-stars .star')[4].click()
+            document.querySelectorAll('.filled-stars .star')[4].click()
+
+        })
+    })
+
+}
+
 const colors = [
     'rgba(255, 0, 0, 0.9)',
     'rgba(0, 255, 0, 0.9)',
@@ -66,6 +109,8 @@ if (url.includes('https://www.dicoding.com/academysubmissions') && url.endsWith(
             }, true);
         }
     })
+
+    showAcceptButton()
 
 }
 
@@ -173,7 +218,6 @@ chrome.runtime.onMessage.addListener(function (templateMessage) {
             froala[1].scrollIntoView()
             break;
     }
-
 
 
     // if (message.type === 'accept') {
