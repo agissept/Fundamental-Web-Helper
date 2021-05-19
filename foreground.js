@@ -34,11 +34,16 @@ const acceptBackendTemplate = `
 <p style="text-align:right;"><span style="color:rgb(226,80,65);">Dicoding Reviewer</span></p>
 `
 
+let checklist = false
+
 const checklistAllCriteria = () => {
-    const button = document.querySelectorAll('.btn-group-toggle .btn-secondary')
-    button.forEach(e => {
-        e.click()
-    })
+    if (checklist == false) {
+        const button = document.querySelectorAll('.btn-group-toggle .btn-secondary')
+        button.forEach(e => {
+            e.click()
+        })
+        checklist == true
+    }
 
 }
 
@@ -60,6 +65,12 @@ const showAcceptButton = () => {
             const template = acceptBackendTemplate.replace('$name', name)
             froala.innerHTML = template
 
+            document.querySelector('.btn.btn-lg.btn-success').scrollIntoView({
+                behavior: 'auto',
+                block: 'center',
+                inline: 'center'
+            });
+
             document.querySelectorAll('.empty-stars .star')[4].click()
             document.querySelectorAll('.filled-stars .star')[4].click()
 
@@ -75,6 +86,27 @@ const colors = [
     'rgba(255, 255, 0, 0.9)',
     'rgba(255, 0, 255, 0.9)'
 ]
+
+function addTemplate(stars) {
+    if (stars > 3) {
+        window.addEventListener('load', (event) => {
+            console.log('sssss')
+            checklistAllCriteria()
+            const p = document.querySelectorAll('.form-control-static')[1]
+            const name = p.querySelector('a').innerText
+            const froala = document.querySelectorAll('.fr-element')[0]
+            const template = acceptBackendTemplate.replace('$name', name)
+            froala.innerHTML = template
+
+            document.querySelector('#accept-button').scrollIntoView({
+                behavior: 'auto',
+                block: 'center',
+                inline: 'center'
+            });
+
+        });
+    }
+}
 
 const url = window.location.href
 if (url.includes('file://')) {
@@ -94,7 +126,7 @@ if (url.includes('file://')) {
     }
 }
 
-if (url.includes('https://www.dicoding.com/academysubmissions') && url.endsWith('review')) {
+if (url.includes('https://www.dicoding.com/academysubmissions') && url.includes('review')) {
     document.querySelector('.js-source-code').addEventListener('click', () => {
         const commentForm = document.querySelector('.js-line-comment .js-comment-form')
         if (commentForm !== null) {
@@ -112,6 +144,12 @@ if (url.includes('https://www.dicoding.com/academysubmissions') && url.endsWith(
 
     showAcceptButton()
 
+    const url1 = new URL(window.location.href);
+    const stars = url1.searchParams.get("stars");
+
+    if (stars !== undefined) {
+        addTemplate(stars)
+    }
 }
 
 
@@ -202,11 +240,11 @@ chrome.runtime.onMessage.addListener(function (templateMessage) {
             dummy.value = templateMessage.message;
             dummy.select();
 
-            function listener(e) {
-                e.clipboardData.setData("text/html", templateMessage.message);
-                e.clipboardData.setData("text/plain", templateMessage.message);
-                e.preventDefault();
-            }
+        function listener(e) {
+            e.clipboardData.setData("text/html", templateMessage.message);
+            e.clipboardData.setData("text/plain", templateMessage.message);
+            e.preventDefault();
+        }
             document.addEventListener("copy", listener);
             document.execCommand("copy");
             document.removeEventListener("copy", listener);
