@@ -117,8 +117,6 @@ const showAcceptButton = () => {
         e.addEventListener('click', async (event) => {
             event.preventDefault()
 
-          
-
 
             const response = await fetch('http://localhost:5555/opensubmission', {
                 method: 'POST',
@@ -185,6 +183,25 @@ if (url.includes('file://')) {
             console.log(`%c${strElement}: false`, 'color: #721c24; background-color: #f8d7da;');
         }
     }
+
+
+    const restructureElement = () => {
+
+        const html = document.documentElement.innerHTML.split('\n')
+
+        const arrayElements = html.filter(line =>
+            line.includes('<header') || line.includes('</header>') ||
+            line.includes('<main') || line.includes('</main>') ||
+            line.includes('<article') || line.includes('</article>') ||
+            line.includes('<aside') || line.includes('</aside>') ||
+            line.includes('<footer') || line.includes('</footer>'))
+
+        console.log(arrayElements.join('\n'))
+    }
+
+    window.addEventListener('load', () =>  {
+        restructureElement()
+    });
 }
 
 if (url.includes('https://www.dicoding.com/academysubmissions') && url.includes('review')) {
@@ -301,11 +318,11 @@ chrome.runtime.onMessage.addListener(function (templateMessage) {
             dummy.value = templateMessage.message;
             dummy.select();
 
-            function listener(e) {
-                e.clipboardData.setData("text/html", templateMessage.message);
-                e.clipboardData.setData("text/plain", templateMessage.message);
-                e.preventDefault();
-            }
+        function listener(e) {
+            e.clipboardData.setData("text/html", templateMessage.message);
+            e.clipboardData.setData("text/plain", templateMessage.message);
+            e.preventDefault();
+        }
 
             document.addEventListener("copy", listener);
             document.execCommand("copy");
