@@ -4,7 +4,7 @@
     "manifest_version": 2,
     "content_scripts":[{
         "matches": ["file:///*", "https://www.dicoding.com/*"],
-        "js": ["foreground.js"]
+        "js": ["dropdown.js", "foreground.js"]
     }],
     "background": {
         "scripts": ["background.js"],
@@ -12,5 +12,10 @@
 
     },
     "browser_action": {},
-    "permissions": ["tabs"]
-} 
+    "permissions": ["tabs",
+        "contextMenus",
+        "tabs",
+        "http://*/*",
+        "https://*/*"
+    ]
+}

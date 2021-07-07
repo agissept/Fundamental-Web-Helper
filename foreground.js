@@ -47,13 +47,28 @@ const checklistAllCriteria = () => {
 
 }
 
+function getIdSubmnission() {
+    return window.location.pathname.split('/')[2]
+}
+
+function getSubmitter() {
+    return document.querySelector('.form-control-static a').innerText
+}
+
+function getFolderPathSubmission() {
+    const idSubmission = getIdSubmnission()
+    const submitter = getSubmitter()
+    return `C:\\Users\\Agis\\Desktop\\backend-pemula-auto-review\\result\\extract\\${idSubmission} ${submitter}`
+}
+
 
 const showAcceptButton = () => {
     const cardHeader = document.querySelectorAll('.card-header')[4]
     const buttonAccept1 = '<button id="accept-button" value="4">Bintang 4</button>'
     const buttonAccept2 = '<button id="accept-button" value="5">Bintang 5</button>'
+    const buttonDownloadExtract = '<button id="download-extract-button"">Download and Extract</button>'
 
-    cardHeader.insertAdjacentHTML('beforeend', buttonAccept1 + buttonAccept2)
+    cardHeader.insertAdjacentHTML('beforeend', buttonAccept1 + buttonAccept2 + buttonDownloadExtract + dropdown)
 
     document.querySelectorAll('#accept-button').forEach(button => {
         button.addEventListener('click', () => {
@@ -74,6 +89,52 @@ const showAcceptButton = () => {
             document.querySelectorAll('.empty-stars .star')[4].click()
             document.querySelectorAll('.filled-stars .star')[4].click()
 
+        })
+    })
+
+    document.querySelector('#download-extract-button').addEventListener('click', async () => {
+        const url = document.querySelectorAll('a.btn.btn-secondary')[3].href
+        const id = document.querySelectorAll('.form-control-static strong')[0].innerText
+        const name = document.querySelectorAll('.form-control-static.mb-0 a')[0].innerText
+
+        const response = await fetch('http://localhost:5555/downloadsubmission', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                url: url,
+                fileName: `${id} ${name}.zip`
+            })
+        })
+
+        console.log(response)
+
+        alert(JSON.stringify(response))
+    })
+
+    document.querySelectorAll('#open-with a').forEach(e => {
+        e.addEventListener('click', async (event) => {
+            event.preventDefault()
+
+          
+
+
+            const response = await fetch('http://localhost:5555/opensubmission', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    appToOpen: e.name,
+                    name: getSubmitter(),
+                    id: getIdSubmnission()
+                })
+            })
+
+            console.log(response)
+
+            alert(JSON.stringify(response))
         })
     })
 
@@ -219,14 +280,14 @@ chrome.runtime.onMessage.addListener(function (templateMessage) {
 
             template = rejectionTemplate.replace('$name', name).replace('$message', templateMessage.message)
             froala[1].innerHTML = template
-            froala[1].scrollIntoView()
+            // froala[1].scrollIntoView()
 
             break
         case 'accept':
             allCheck()
             template = acceptionTemplate.replace('$name', name).replace('$message', templateMessage.message)
             froala[0].innerHTML = template
-            froala[0].scrollIntoView()
+            // froala[0].scrollIntoView()
 
             break
         case 'copy':
@@ -240,11 +301,12 @@ chrome.runtime.onMessage.addListener(function (templateMessage) {
             dummy.value = templateMessage.message;
             dummy.select();
 
-        function listener(e) {
-            e.clipboardData.setData("text/html", templateMessage.message);
-            e.clipboardData.setData("text/plain", templateMessage.message);
-            e.preventDefault();
-        }
+            function listener(e) {
+                e.clipboardData.setData("text/html", templateMessage.message);
+                e.clipboardData.setData("text/plain", templateMessage.message);
+                e.preventDefault();
+            }
+
             document.addEventListener("copy", listener);
             document.execCommand("copy");
             document.removeEventListener("copy", listener);
@@ -253,7 +315,7 @@ chrome.runtime.onMessage.addListener(function (templateMessage) {
         default:
             template = templateMessage.message
             froala[1].innerHTML = template
-            froala[1].scrollIntoView()
+            // froala[1].scrollIntoView()
             break;
     }
 
@@ -291,3 +353,19 @@ chrome.runtime.onMessage.addListener(function (templateMessage) {
     // }
 
 })
+
+let pathFile = null;
+
+document.addEventListener("contextmenu", function (event) {
+    const path = event.target.getAttribute('data-path')
+    pathFile = `${getFolderPathSubmission()}\\${path}`
+}, true);
+
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request === "getClickedEl") {
+        sendResponse({
+            pathFile
+        })
+    }
+});
